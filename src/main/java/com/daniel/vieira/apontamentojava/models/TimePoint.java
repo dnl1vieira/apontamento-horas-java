@@ -21,6 +21,7 @@ public class TimePoint {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "CUSTOMER")
@@ -43,5 +44,13 @@ public class TimePoint {
 
     @Column(name = "DATE")
     private LocalDateTime date;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
 }

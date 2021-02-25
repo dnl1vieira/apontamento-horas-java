@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:6033/app-apontamento
+    url: jdbc:mysql://127.0.0.1:3306/apontamento
     username: root
-    password: my_secret_password
+    password:
   jpa:
      hibernate:
        ddl-auto: update
