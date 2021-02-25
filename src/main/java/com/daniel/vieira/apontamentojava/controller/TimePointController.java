@@ -4,6 +4,7 @@ import com.daniel.vieira.apontamentojava.models.TimePoint;
 import com.daniel.vieira.apontamentojava.repository.TimePointRepository;
 import com.daniel.vieira.apontamentojava.service.TimePointService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,13 +57,6 @@ public class TimePointController {
       TimePoint timePoint = serviceTimePoint.validateToDelete(id);
       repositoryTimePoint.delete(timePoint);
       return new ResponseEntity<String>(MSG_DELETE, HttpStatus.OK);
-   }
-
-   @GetMapping("/listAll")
-   public List<TimePoint> listAll() {
-      List<TimePoint> listTimePoint = new ArrayList<>();
-      repositoryTimePoint.findAll().forEach(listTimePoint::add);
-      return listTimePoint;
    }
 
 
