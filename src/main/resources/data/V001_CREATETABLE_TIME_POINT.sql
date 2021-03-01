@@ -6,5 +6,6 @@ CREATE TABLE TB_HOUR_POINT (
     SERVICE varchar(255),
     DESCRIPTION varchar(255),
     MANAGER varchar(200),
-    DATE datetime
+    DATE datetime,
+    CREATE_DATE datetime default now()
 );

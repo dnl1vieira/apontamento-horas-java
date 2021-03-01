@@ -1,8 +1,6 @@
 package com.daniel.vieira.apontamentojava.models;
 
-import java.sql.Time;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.sun.istack.NotNull;
 import lombok.Data;
 
 @Entity
@@ -44,6 +41,9 @@ public class TimePoint {
 
     @Column(name = "DATE")
     private LocalDateTime date;
+
+    @Column(name = "CREATE_DATE")
+    private LocalDateTime createDate;
 
     public Long getId() {
         return id;

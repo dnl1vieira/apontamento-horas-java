@@ -8,10 +8,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -22,20 +25,14 @@ public class TimePointService {
    @Autowired
    TimePointRepository repositoryTimePoint;
 
-   public Page<TimePoint> findAll(Pageable pageable) {
-      Page<TimePoint> obj = repositoryTimePoint.getAll(pageable);
+   public Page<TimePoint> findByFilter(String dateFrom, String dateTo, Pageable pageable) {
+      Page<TimePoint> obj = repositoryTimePoint.findByFilters(convertStringToDate(dateFrom), convertStringToDate(dateTo), pageable);
       return obj;
    }
 
    public TimePoint validateToSave(TimePointDTO objTimePointDto) throws ParseException {
-      TimePoint objToSave = convertToEntity(objTimePointDto);
-      return objToSave;
-   }
-
-   public TimePoint validateToUpdate(Long id, TimePoint objTimePoint) {
-      TimePoint timePoint = repositoryTimePoint.findById(id).get();
-      timePoint = objTimePoint;
-      return timePoint;
+      TimePoint obj = convertToEntity(objTimePointDto);
+      return obj;
    }
 
    public TimePoint validateToDelete(Long id) {
@@ -44,14 +41,36 @@ public class TimePointService {
    }
 
    private TimePoint convertToEntity(TimePointDTO objDTO) throws ParseException {
-      ModelMapper modelMapper = new ModelMapper();
-      TimePoint timePoint = modelMapper.map(objDTO, TimePoint.class);
-      if (timePoint.getId() != null) {
-         Optional<TimePoint> oldTimePoint = repositoryTimePoint.findById(timePoint.getId());
-         log.info("");
-         oldTimePoint.ifPresent(point -> timePoint.setId(point.getId()));
+      if (objDTO.getId() != null) {
+         TimePoint timePointEdit = repositoryTimePoint.findById(objDTO.getId()).get();
+         timePointEdit.setCustomer(objDTO.getCustomer());
+         timePointEdit.setService(objDTO.getService());
+         timePointEdit.setProject(objDTO.getProject());
+         timePointEdit.setManager(objDTO.getManager());
+         timePointEdit.setDescription(objDTO.getDescription());
+         timePointEdit.setHour(objDTO.getHour());
+         timePointEdit.setDate(objDTO.getDate());
+         return timePointEdit;
+      }else{
+         TimePoint timePointSave = new TimePoint();
+         timePointSave.setCustomer(objDTO.getCustomer());
+         timePointSave.setService(objDTO.getService());
+         timePointSave.setProject(objDTO.getProject());
+         timePointSave.setManager(objDTO.getManager());
+         timePointSave.setDescription(objDTO.getDescription());
+         timePointSave.setHour(objDTO.getHour());
+         timePointSave.setDate(objDTO.getDate());
+         return timePointSave;
       }
-      return timePoint;
+   }
+
+   public LocalDateTime convertStringToDate(String date){
+      if(date.equals(""))
+         return null;
+
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+      LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
+      return dateTime;
    }
 
 }

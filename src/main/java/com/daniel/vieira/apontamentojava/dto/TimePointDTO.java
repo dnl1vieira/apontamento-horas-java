@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class TimePointDTO {
-
+   private Long id;
    private String customer;
    private String hour;
    private String project;

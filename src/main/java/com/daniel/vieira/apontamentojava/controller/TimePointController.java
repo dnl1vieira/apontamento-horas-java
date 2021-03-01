@@ -7,16 +7,16 @@ import com.daniel.vieira.apontamentojava.service.TimePointService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.sql.Time;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @RestController
 @CrossOrigin("*")
@@ -30,34 +30,27 @@ public class TimePointController {
    @Autowired
    TimePointService serviceTimePoint;
 
-   private final static String MSG_SAVE = "Save Successfully";
-   private final static String MSG_UPDATE = "Update Successfully";
-   private final static String MSG_DELETE = "Delete Successfully";
+   private final static String MSG_SAVE = "Registro Salvo com Sucesso!";
+   private final static String MSG_UPDATE = "Registro Alterado com Sucesso!";
+   private final static String MSG_DELETE = "Registro Deletado com Sucesso!";
 
    @GetMapping("/findAll")
-   public ResponseEntity<Page<TimePoint>> findAll(Pageable pageable) {
-      Page<TimePoint> timePoint = serviceTimePoint.findAll(pageable);
+   public ResponseEntity<Page<TimePoint>> findAll(@Param("dateFrom") String dateFrom, @Param("dateFrom") String dateTo, Pageable pageable) {
+      Page<TimePoint> timePoint = serviceTimePoint.findByFilter(dateFrom, dateTo, pageable);
       return new ResponseEntity<Page<TimePoint>>(timePoint, HttpStatus.OK);
    }
 
    @PostMapping("/saveOrUpdate")
    public ResponseEntity<String> saveOrUpdate(@RequestBody TimePointDTO obj) {
       try {
+         String MSG = Objects.isNull(obj.getId()) ? MSG_SAVE : MSG_UPDATE;
          TimePoint timePoint = serviceTimePoint.validateToSave(obj);
          repositoryTimePoint.save(timePoint);
-
-         return new ResponseEntity<String>(MSG_SAVE, HttpStatus.OK);
+         return new ResponseEntity<String>(MSG, HttpStatus.OK);
       } catch (IllegalArgumentException | ParseException illegalArgumentExceptionError) {
          String MSG_ERROR = "Error Found in Save TIME POINT \n ERROR: " + illegalArgumentExceptionError;
          return new ResponseEntity<String>(MSG_ERROR, HttpStatus.BAD_REQUEST);
       }
-   }
-
-   @PostMapping("/update")
-   public ResponseEntity<String> update(Long id, TimePoint objTimePoint) {
-      TimePoint timePoint = serviceTimePoint.validateToUpdate(id, objTimePoint);
-      repositoryTimePoint.save(timePoint);
-      return new ResponseEntity<String>(MSG_UPDATE, HttpStatus.OK);
    }
 
    @DeleteMapping("/delete/{id}")
