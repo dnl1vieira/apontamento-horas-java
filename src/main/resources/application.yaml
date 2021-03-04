@@ -8,3 +8,7 @@ spring:
      hibernate:
        ddl-auto: update
        show-sql: false
+
+app:
+  excel:
+    out: C:\\Users\\Daniel Vieira\\Documents\\mnt\\Apontamentos.xlsx

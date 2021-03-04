@@ -3,8 +3,10 @@ package com.daniel.vieira.apontamentojava.controller;
 import com.daniel.vieira.apontamentojava.dto.TimePointDTO;
 import com.daniel.vieira.apontamentojava.models.TimePoint;
 import com.daniel.vieira.apontamentojava.repository.TimePointRepository;
+import com.daniel.vieira.apontamentojava.service.ExcelWriter;
 import com.daniel.vieira.apontamentojava.service.TimePointService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.text.ParseException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Objects;
 
 @RestController
@@ -29,6 +32,9 @@ public class TimePointController {
 
    @Autowired
    TimePointService serviceTimePoint;
+
+   @Autowired
+   ExcelWriter serviceExcelWriter;
 
    private final static String MSG_SAVE = "Registro Salvo com Sucesso!";
    private final static String MSG_UPDATE = "Registro Alterado com Sucesso!";
@@ -60,5 +66,12 @@ public class TimePointController {
       return new ResponseEntity<String>(MSG_DELETE, HttpStatus.OK);
    }
 
+   @GetMapping("/download-file")
+   public ResponseEntity<String> downloadFile(@Param("dateFrom") String dateFrom, @Param("dateFrom") String dateTo) {
+      log.info("dateFrom: {} dateTO: {}", dateFrom, dateTo);
+      ArrayList<TimePoint> timePoint = serviceTimePoint.findByFilterToDownload(dateFrom, dateTo);
+      String path = serviceExcelWriter.load(timePoint);
+      return new ResponseEntity<String>(path, HttpStatus.OK);
+   }
 
 }

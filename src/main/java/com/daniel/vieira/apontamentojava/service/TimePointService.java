@@ -15,6 +15,7 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -27,6 +28,11 @@ public class TimePointService {
 
    public Page<TimePoint> findByFilter(String dateFrom, String dateTo, Pageable pageable) {
       Page<TimePoint> obj = repositoryTimePoint.findByFilters(convertStringToDate(dateFrom), convertStringToDate(dateTo), pageable);
+      return obj;
+   }
+
+   public ArrayList<TimePoint> findByFilterToDownload(String dateFrom, String dateTo) {
+      ArrayList<TimePoint> obj = repositoryTimePoint.findByFiltersToDownload(convertStringToDate(dateFrom), convertStringToDate(dateTo));
       return obj;
    }
 
@@ -67,10 +73,8 @@ public class TimePointService {
    public LocalDateTime convertStringToDate(String date){
       if(date.equals(""))
          return null;
-
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-      LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
-      return dateTime;
+      return LocalDateTime.parse(date, formatter);
    }
 
 }
