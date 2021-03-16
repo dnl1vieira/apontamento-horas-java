@@ -10,4 +10,5 @@ public class ApontamentoJavaApplication {
 		SpringApplication.run(ApontamentoJavaApplication.class, args);
 	}
 
+
 }

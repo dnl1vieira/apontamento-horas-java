@@ -1,3 +1,5 @@
+CREATE DATABASE TIMETRACKING_DB_dev;
+use TIMETRACKING_DB_dev;
 CREATE TABLE TB_HOUR_POINT (
     id bigint(11) primary key,
     CUSTOMER varchar(255),

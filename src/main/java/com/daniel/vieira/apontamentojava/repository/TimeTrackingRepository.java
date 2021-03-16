@@ -1,9 +1,8 @@
 package com.daniel.vieira.apontamentojava.repository;
 
-import com.daniel.vieira.apontamentojava.models.TimePoint;
+import com.daniel.vieira.apontamentojava.models.TimeTracking;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -13,10 +12,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @Repository
 @CrossOrigin("*")
 @RepositoryRestResource(path = "time-point", collectionResourceRel = "time-points", itemResourceRel = "time-point")
-public interface TimePointRepository extends PagingAndSortingRepository<TimePoint, Long>{
+public interface TimeTrackingRepository extends PagingAndSortingRepository<TimeTracking, Long>{
 
-   @Query("select t from TimePoint t")
-   Page<TimePoint> getAll(Pageable pageable);
+   @Query("select t from TimeTracking t")
+   Page<TimeTracking> getAll(Pageable pageable);
 
-   TimePoint getTimePointById(Long id);
+   TimeTracking getTimePointById(Long id);
 }
