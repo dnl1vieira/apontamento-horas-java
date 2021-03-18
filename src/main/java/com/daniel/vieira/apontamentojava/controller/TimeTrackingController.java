@@ -1,5 +1,6 @@
 package com.daniel.vieira.apontamentojava.controller;
 
+import com.daniel.vieira.apontamentojava.exceptions.NoResultsException;
 import com.daniel.vieira.apontamentojava.exceptions.RequiredFiledsIsMissing;
 import com.daniel.vieira.apontamentojava.exceptions.TimeTrackingNotFound;
 import com.daniel.vieira.apontamentojava.models.TimeTracking;
@@ -17,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @CrossOrigin("*")
 @RequestMapping("/api/time-point")
 @Slf4j
-public class TimePointController {
+public class TimeTrackingController {
 
    private final static String MSG_SAVE = "Saved Successfully";
    private final static String MSG_DELETE = "Deleted Successfully";
@@ -27,8 +28,12 @@ public class TimePointController {
 
    @GetMapping("/findAll")
    public ResponseEntity<Page<TimeTracking>> findAll(Pageable pageable) {
-      Page<TimeTracking> timePoint = timeTrackingService.findAll(pageable);
-      return new ResponseEntity<Page<TimeTracking>>(timePoint, HttpStatus.OK);
+      try{
+         Page<TimeTracking> timePoint = timeTrackingService.findAll(pageable);
+         return new ResponseEntity<Page<TimeTracking>>(timePoint, HttpStatus.OK);
+      }catch (NoResultsException exception){
+         return new ResponseEntity<Page<TimeTracking>>(HttpStatus.INTERNAL_SERVER_ERROR);
+      }
    }
 
    @PostMapping("/saveOrUpdate")

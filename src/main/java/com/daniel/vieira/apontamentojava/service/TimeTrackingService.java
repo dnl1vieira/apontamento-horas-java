@@ -1,5 +1,6 @@
 package com.daniel.vieira.apontamentojava.service;
 
+import com.daniel.vieira.apontamentojava.exceptions.NoResultsException;
 import com.daniel.vieira.apontamentojava.exceptions.RequiredFiledsIsMissing;
 import com.daniel.vieira.apontamentojava.exceptions.TimeTrackingNotFound;
 import com.daniel.vieira.apontamentojava.models.TimeTracking;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.util.Optional;
 
@@ -20,8 +22,13 @@ public class TimeTrackingService {
    @Autowired
    TimeTrackingRepository repository;
 
-   public Page<TimeTracking> findAll(Pageable pageable) {
-      return repository.getAll(pageable);
+   public Page<TimeTracking> findAll(Pageable pageable) throws NoResultsException {
+      Optional<Page<TimeTracking>> listResultOfGetAll = Optional.ofNullable(repository.getAll(pageable));
+      if(listResultOfGetAll.isPresent())
+         return listResultOfGetAll.get();
+      else
+         throw new NoResultsException("Sorry, we don't find any time tracking in our database.");
+
    }
 
    public void saveOrUpdate(TimeTracking obj){

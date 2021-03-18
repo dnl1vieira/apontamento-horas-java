@@ -1,10 +1,15 @@
+---
+server:
+  port: 8080
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/apontamento
-    username: root
-    password:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://127.0.0.1:5432/timetracking_db_dev
+    username: postgres
+    password: 123123
   jpa:
-     hibernate:
-       ddl-auto: update
-       show-sql: false
+    hibernate:
+      ddl-auto: update
+      show-sql: false
+  profiles:
+    active: development
