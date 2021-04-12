@@ -9,7 +9,7 @@ Software in construction
 
 ## Requiremtns
 - Google Chrome
-- Resolution: 1090x1080
+- Resolution: 1920x1080
 
 ## Project Information
 - Created: 07/2020
