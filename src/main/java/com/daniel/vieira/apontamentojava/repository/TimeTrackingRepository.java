@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Repository
 @CrossOrigin("*")
-@RepositoryRestResource(path = "time-point", collectionResourceRel = "time-points", itemResourceRel = "time-point")
+@RepositoryRestResource(path = "time-tracking", collectionResourceRel = "time-trackings", itemResourceRel = "time-tracking")
 public interface TimeTrackingRepository extends PagingAndSortingRepository<TimeTracking, Long>{
 
    @Query("select t from TimeTracking t")

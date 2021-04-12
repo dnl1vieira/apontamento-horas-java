@@ -16,12 +16,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/time-point")
+@RequestMapping("/api/time-tracking")
 @Slf4j
 public class TimeTrackingController {
 
-   private final static String MSG_SAVE = "Saved Successfully";
-   private final static String MSG_DELETE = "Deleted Successfully";
+   private final String MSG_SAVE = "Saved Successfully";
+   private final String MSG_DELETE = "Deleted Successfully";
 
    @Autowired
    TimeTrackingService timeTrackingService;
